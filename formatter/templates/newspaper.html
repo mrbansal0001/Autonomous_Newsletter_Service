@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>THE AI 7 — Issue {{ week_number }}, {{ issue_date }}</title>
+<style>
+:root {
+  --paper: #f7f4ec;
+  --paper-line: #ded7c4;
+  --ink: #1a1a17;
+  --ink-soft: #5a564c;
+  --ink-faint: #8a8577;
+  --accent: #9b3a2c;
+  --accent-soft: #f3e3dd;
+  --gold: #a97a2b;
+  --gold-soft: #f1e6cf;
+  --rule: #d8d1bd;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #e9e5d8;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.sans {
+  font-family: -apple-system, Helvetica, Arial, sans-serif;
+}
+a { color: inherit; }
+
+/* ── PAGE ─────────────────────────────────────── */
+.page {
+  background: var(--paper);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 0 36px;
+}
+.page + .page { page-break-before: always; }
+@media print {
+  body { background: var(--paper); }
+  .page { max-width: none; }
+}
+
+/* ── MASTHEAD (page 1 only) ──────────────────── */
+.masthead { text-align:center; padding: 34px 48px 18px; border-bottom: 3px double var(--ink); }
+.masthead .kicker { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size:10.5px; letter-spacing:3px; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:10px; }
+.masthead .nameplate { font-size:58px; font-weight:900; letter-spacing:2px; font-family:'Times New Roman', Georgia, serif; line-height:1; color:var(--ink); }
+.masthead .tagline { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size:11.5px; color:var(--ink-soft); letter-spacing:2.5px; margin:10px 0 14px; text-transform:uppercase; }
+.masthead .folio { font-family: -apple-system, Helvetica, Arial, sans-serif; display:flex; justify-content:space-between; font-size:11px; color:var(--ink-soft); letter-spacing:0.4px; padding-top:10px; border-top:1px solid var(--rule); }
+
+/* ── FOLIO (pages 2-5) ────────────────────────── */
+.folio-bar { font-family: -apple-system, Helvetica, Arial, sans-serif; display:flex; justify-content:space-between; align-items:baseline; padding:22px 48px 10px; border-bottom:2px solid var(--ink); }
+.folio-bar .section-name { font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--ink); }
+.folio-bar .page-of { font-size:10.5px; color:var(--ink-faint); letter-spacing:1px; }
+
+/* ── TL;DR ────────────────────────────────────── */
+.tldr-box { margin:22px 48px; background:var(--gold-soft); border-top:2px solid var(--gold); border-bottom:2px solid var(--gold); padding:18px 22px; }
+.kicker-label { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--gold); margin-bottom:9px; }
+.tldr-item { padding:4px 0 4px 16px; font-size:13.5px; line-height:1.55; position:relative; }
+.tldr-item::before { content:"—"; position:absolute; left:0; color:var(--gold); font-weight:700; }
+
+/* ── PAPER OF THE WEEK (page 1 feature) ───────── */
+.feature { margin:8px 48px 0; padding:22px 0 6px; }
+.feature-eyebrow { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size:10.5px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+.feature-title { font-size:26px; font-weight:700; line-height:1.25; margin-bottom:14px; text-wrap:balance; }
+.feature-lede { font-size:15.5px; line-height:1.7; color:var(--ink); margin-bottom:12px; }
+.feature-lede:first-of-type:first-letter { font-size:46px; font-weight:700; float:left; line-height:0.8; padding:5px 6px 0 0; color:var(--accent); font-family:'Times New Roman', Georgia, serif; }
+.feature-pullquote { border-left:3px solid var(--accent); background:var(--accent-soft); padding:12px 18px; margin:16px 0; font-style:italic; font-size:14.5px; color:var(--ink); }
+.feature-meta { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size:11.5px; color:var(--ink-soft); margin-top:14px; padding-top:10px; border-top:1px solid var(--rule); display:flex; justify-content:space-between; }
+.feature-meta a { color:var(--accent); font-weight:600; text-decoration:none; }
+
+/* ── SECTION CARD ─────────────────────────────── */
+.content { padding:6px 48px 0; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-bottom:26px; }
+.section { border-top:2px solid var(--ink); }
+.section-header { font-family: -apple-system, Helvetica, Arial, sans-serif; padding:9px 0; font-size:11px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--ink); display:flex; align-items:center; gap:6px; border-bottom:1px solid var(--rule); }
+.section-header .icon { color:var(--accent); }
+
+/* ── ITEM ─────────────────────────────────────── */
+.item { padding:14px 0; border-bottom:1px solid var(--rule); }
+.item:last-child { border-bottom:none; }
+.item-title { font-size:15px; font-weight:700; margin-bottom:5px; line-height:1.32; }
+.item-title a { text-decoration:none; }
+.item-title a:hover { color:var(--accent); }
+.item-summary { font-size:12.8px; color:var(--ink-soft); line-height:1.6; margin-bottom:7px; }
+.item-meta { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size:10.5px; color:var(--ink-faint); letter-spacing:0.3px; margin-top:2px; text-transform:uppercase; }
+
+.why-box { background:var(--accent-soft); border-left:3px solid var(--accent); padding:7px 11px; font-size:12px; color:var(--ink); margin:7px 0; }
+.why-label { font-family: -apple-system, Helvetica, Arial, sans-serif; font-weight:700; color:var(--accent); margin-right:4px; text-transform:uppercase; font-size:10px; letter-spacing:0.5px; }
+.takeaway-box { font-size:12px; font-style:italic; color:var(--ink-soft); margin:5px 0 0; padding-left:14px; border-left:2px solid var(--gold); }
+
+.badge { font-family: -apple-system, Helvetica, Arial, sans-serif; display:inline-block; padding:2px 8px; border:1px solid currentColor; font-size:9.5px; font-weight:700; letter-spacing:0.4px; text-transform:uppercase; margin-right:6px; }
+.badge-beginner    { color:#3d6e3a; }
+.badge-intermediate{ color:var(--gold); }
+.badge-advanced    { color:var(--accent); }
+.stars-badge { font-family: -apple-system, Helvetica, Arial, sans-serif; color:var(--gold); font-weight:700; font-size:11px; }
+
+/* ── BRIEFS (Research Radar / Emerging Patterns / Quick Hits) ── */
+.brief { padding:9px 0; border-bottom:1px solid var(--rule); font-size:12.8px; line-height:1.55; }
+.brief:last-child { border-bottom:none; }
+.brief-title { font-weight:700; }
+.brief-title a { text-decoration:none; }
+.brief-title a:hover { color:var(--accent); }
+.brief-sep { color:var(--ink-faint); margin:0 6px; }
+
+/* ── PICK (Production Playbook / Under the Radar) ─────────── */
+.pick-item { padding:16px 0; }
+.pick-title { font-size:17px; font-weight:700; margin-bottom:8px; line-height:1.3; }
+.pick-title a { text-decoration:none; }
+.pick-text { font-size:13px; color:var(--ink); line-height:1.65; }
+
+/* ── TOOL OF THE WEEK ─────────────────────────── */
+.tow-item { padding:16px 0; }
+.tow-title { font-size:19px; font-weight:700; margin-bottom:4px; }
+.tow-links { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size:11.5px; margin-bottom:14px; }
+.tow-links a { color:var(--accent); text-decoration:none; }
+.tow-section { margin:11px 0; }
+.tow-section-label { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--ink-faint); margin-bottom:4px; }
+.tow-section-text { font-size:13px; color:var(--ink); line-height:1.6; }
+.code-block { background:#232019; color:#e8e3d4; padding:14px 16px; border-radius:3px; font-family:'Courier New', Courier, monospace; font-size:12px; line-height:1.5; overflow-x:auto; margin:8px 0; white-space:pre-wrap; word-break:break-word; }
+.install-block { background:var(--ink); color:#e8e3d4; padding:8px 14px; border-radius:3px; font-family:'Courier New', monospace; font-size:12px; margin:6px 0; }
+
+/* ── GLOSSARY / LEARNING / TOPICS (best-effort, page 5) ────── */
+.glossary-item { padding:9px 0; border-bottom:1px solid var(--rule); }
+.glossary-item:last-child { border-bottom:none; }
+.glossary-term { font-weight:700; color:var(--accent); font-size:13px; }
+.glossary-def { font-size:12px; color:var(--ink-soft); margin-top:2px; line-height:1.5; }
+.learning-item { padding:8px 0; border-bottom:1px solid var(--rule); font-size:12.8px; color:var(--ink); line-height:1.5; }
+.learning-item:last-child { border-bottom:none; }
+.learning-item::before { content:"→  "; color:var(--accent); font-weight:700; }
+.topics-cloud { padding:12px 0; display:flex; flex-wrap:wrap; gap:8px; }
+.topic-tag { font-family: -apple-system, Helvetica, Arial, sans-serif; border:1px solid var(--ink-faint); color:var(--ink-soft); padding:4px 11px; font-size:11px; font-weight:600; letter-spacing:0.3px; }
+
+/* ── FOOTER ───────────────────────────────────── */
+.footer { font-family: -apple-system, Helvetica, Arial, sans-serif; background:var(--ink); color:#c9c4b3; text-align:center; padding:22px; font-size:11px; letter-spacing:0.5px; }
+.footer .brand { font-family:'Times New Roman', Georgia, serif; font-size:15px; letter-spacing:1px; color:#f7f4ec; margin-bottom:6px; }
+
+@media print {
+  .section-header, .footer { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .two-col { display:block; }
+  .two-col .section { margin-bottom:26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PAGE 1 — OPEN                                                -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="masthead">
+    <div class="kicker">Weekly AI Intelligence Brief</div>
+    <div class="nameplate">THE AI 7</div>
+    <div class="tagline">Curated · Reviewed · Delivered Every Sunday</div>
+    <div class="folio">
+      <span>Issue No. {{ week_number }}</span>
+      <span>{{ issue_date }}</span>
+      <span>Multi-Agent Newsroom</span>
+    </div>
+  </div>
+
+  <div class="tldr-box">
+    <div class="kicker-label">This Week at a Glance</div>
+    {% for bullet in editorial.tldr %}
+    <div class="tldr-item">{{ bullet }}</div>
+    {% endfor %}
+  </div>
+
+  {% if editorial.paper_of_week and editorial.paper_of_week.problem %}
+  <div class="feature">
+    <div class="feature-eyebrow">Paper of the Week</div>
+    <div class="feature-title">{{ editorial.paper_of_week.title }}</div>
+    <div class="feature-lede">{{ editorial.paper_of_week.problem }} {{ editorial.paper_of_week.approach }}</div>
+    <div class="feature-lede">{{ editorial.paper_of_week.results }}</div>
+    {% if editorial.paper_of_week.why_you_should_care %}
+    <div class="feature-pullquote">“{{ editorial.paper_of_week.why_you_should_care }}”</div>
+    {% endif %}
+    <div class="feature-meta">
+      <span>{% if editorial.paper_of_week.takeaway %}<strong>In one line:</strong> {{ editorial.paper_of_week.takeaway }}{% endif %}</span>
+      {% if editorial.paper_of_week.url %}<a href="{{ editorial.paper_of_week.url }}" target="_blank">Read the paper →</a>{% endif %}
+    </div>
+  </div>
+  {% elif editorial.paper_of_week and editorial.paper_of_week.title %}
+  <div class="feature">
+    <div class="feature-eyebrow">Editor's Pick</div>
+    <div class="feature-title">{{ editorial.paper_of_week.title }}</div>
+    <div class="feature-meta">
+      <span></span>
+      {% if editorial.paper_of_week.url %}<a href="{{ editorial.paper_of_week.url }}" target="_blank">Read the paper →</a>{% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+</div><!-- end page 1 -->
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PAGE 2 — RESEARCH                                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="folio-bar">
+    <span class="section-name">Research</span>
+    <span class="page-of">Page 2 of 5</span>
+  </div>
+
+  <div class="content">
+    <div class="section" style="margin-top:22px;">
+      <div class="section-header"><span class="icon">◆</span> Top Research Papers</div>
+      {% for paper in editorial.top_papers[:4] %}
+      <div class="item">
+        <div class="item-title" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+          <span>{{ paper.title }}</span>
+          {% if paper.pdf_url %}<a href="{{ paper.pdf_url }}" target="_blank" class="sans" style="font-size:11px;color:var(--accent);white-space:nowrap;">[PDF]</a>{% elif paper.url %}<a href="{{ paper.url }}" target="_blank" class="sans" style="font-size:11px;color:var(--accent);white-space:nowrap;">[PDF]</a>{% endif %}
+        </div>
+        <span class="badge badge-{{ paper.difficulty | lower }}">{{ paper.difficulty }}</span>
+        <span class="item-meta">{{ paper.authors | join(', ') if paper.authors else '' }} · {{ paper.published }} · {{ paper.source }}</span>
+        <div class="item-summary" style="margin-top:6px;">{{ paper.summary }}</div>
+        {% if paper.why_it_matters %}
+        <div class="why-box"><span class="why-label">Why it matters</span>{{ paper.why_it_matters }}</div>
+        {% endif %}
+        {% if paper.key_takeaway %}
+        <div class="takeaway-box">{{ paper.key_takeaway }}</div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if editorial.research_radar %}
+    <div class="section" style="margin-top:26px;">
+      <div class="section-header"><span class="icon">◆</span> Research Radar</div>
+      {% for entry in editorial.research_radar %}
+      <div class="brief">
+        <span class="brief-title">{% if entry.url %}<a href="{{ entry.url }}" target="_blank">{{ entry.title }}</a>{% else %}{{ entry.title }}{% endif %}</span>
+        <span class="brief-sep">—</span>{{ entry.one_liner }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div><!-- end page 2 -->
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PAGE 3 — TOOLING & INFRASTRUCTURE                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="folio-bar">
+    <span class="section-name">Tooling &amp; Infrastructure</span>
+    <span class="page-of">Page 3 of 5</span>
+  </div>
+
+  <div class="content">
+    <div class="two-col" style="margin-top:22px;">
+      <div class="section">
+        <div class="section-header"><span class="icon">◆</span> GitHub Trending</div>
+        {% for repo in editorial.top_github %}
+        <div class="item">
+          <div class="item-title" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <span>{{ repo.title }}</span>
+            {% if repo.url %}<a href="{{ repo.url }}" target="_blank" class="sans" title="View on GitHub" style="color:var(--accent);white-space:nowrap;font-size:11px;">[Repo]</a>{% endif %}
+          </div>
+          {% if repo.stars_this_week %}<span class="stars-badge">+{{ repo.stars_this_week }} this week</span>{% endif %}
+          <div class="item-summary">{{ repo.description or repo.summary }}</div>
+          {% if repo.why_it_matters %}
+          <div class="why-box"><span class="why-label">Why it matters</span>{{ repo.why_it_matters }}</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="section">
+        <div class="section-header"><span class="icon">◆</span> Framework &amp; Tool Updates</div>
+        {% for fw in editorial.top_frameworks %}
+        <div class="item">
+          <div class="item-title" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <span>{{ fw.title }}</span>
+            {% if fw.docs_url %}<a href="{{ fw.docs_url }}" target="_blank" class="sans" style="font-size:11px;color:var(--accent);white-space:nowrap;">[Docs]</a>{% endif %}
+          </div>
+          <span class="item-meta">{{ fw.published }}</span>
+          <div class="item-summary" style="margin-top:6px;">{{ fw.summary or fw.changelog }}</div>
+          {% if fw.why_it_matters %}
+          <div class="why-box"><span class="why-label">Why it matters</span>{{ fw.why_it_matters }}</div>
+          {% endif %}
+          {% if fw.comparison %}
+          <div class="why-box" style="background:var(--gold-soft);border-left-color:var(--gold);"><span class="why-label" style="color:var(--gold);">What changed</span>{{ fw.comparison }}</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if editorial.emerging_patterns %}
+    <div class="section" style="margin-top:26px;">
+      <div class="section-header"><span class="icon">◆</span> Emerging Patterns &amp; Infra</div>
+      {% for entry in editorial.emerging_patterns %}
+      <div class="brief">
+        <span class="brief-title">{% if entry.url %}<a href="{{ entry.url }}" target="_blank">{{ entry.title }}</a>{% else %}{{ entry.title }}{% endif %}</span>
+        <span class="brief-sep">—</span>{{ entry.one_liner }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div><!-- end page 3 -->
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PAGE 4 — APPLIED                                             -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="folio-bar">
+    <span class="section-name">Applied AI</span>
+    <span class="page-of">Page 4 of 5</span>
+  </div>
+
+  <div class="content">
+    <div class="section" style="margin-top:22px;">
+      <div class="section-header"><span class="icon">◆</span> New Models &amp; Releases</div>
+      {% for item in editorial.top_models %}
+      <div class="item">
+        <div class="item-title" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+          <span>{{ item.title }}</span>
+          {% if item.url %}<a href="{{ item.url }}" target="_blank" class="sans" style="font-size:11px;color:var(--accent);white-space:nowrap;">[Read]</a>{% endif %}
+        </div>
+        <span class="item-meta">{{ item.source }} · {{ item.published }}</span>
+        <div class="item-summary" style="margin-top:6px;">{{ item.summary }}</div>
+        {% if item.why_it_matters %}
+        <div class="why-box"><span class="why-label">Why it matters</span>{{ item.why_it_matters }}</div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if editorial.production_playbook and editorial.production_playbook.summary %}
+    <div class="section" style="margin-top:26px;">
+      <div class="section-header"><span class="icon">◆</span> Production Playbook</div>
+      <div class="pick-item">
+        <div class="pick-title">{% if editorial.production_playbook.url %}<a href="{{ editorial.production_playbook.url }}" target="_blank">{{ editorial.production_playbook.title }}</a>{% else %}{{ editorial.production_playbook.title }}{% endif %}</div>
+        <div class="pick-text">{{ editorial.production_playbook.summary }}</div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if editorial.tool_of_week and editorial.tool_of_week.what_it_is %}
+    <div class="section" style="margin-top:26px;">
+      <div class="section-header"><span class="icon">◆</span> Tool of the Week</div>
+      <div class="tow-item">
+        <div class="tow-title">{{ editorial.tool_of_week.name }}</div>
+        <div class="tow-links">
+          {% if editorial.tool_of_week.url %}<a href="{{ editorial.tool_of_week.url }}" target="_blank">Repository</a>{% endif %}
+          {% if editorial.tool_of_week.docs_url %} · <a href="{{ editorial.tool_of_week.docs_url }}" target="_blank">Docs</a>{% endif %}
+        </div>
+        <div class="tow-section">
+          <div class="tow-section-label">What it is</div>
+          <div class="tow-section-text">{{ editorial.tool_of_week.what_it_is }}</div>
+        </div>
+        {% if editorial.tool_of_week.whats_new %}
+        <div class="tow-section">
+          <div class="tow-section-label">What's new</div>
+          <div class="tow-section-text">{{ editorial.tool_of_week.whats_new }}</div>
+        </div>
+        {% endif %}
+        {% if editorial.tool_of_week.comparison %}
+        <div class="tow-section">
+          <div class="tow-section-label">How it compares</div>
+          <div class="tow-section-text">{{ editorial.tool_of_week.comparison }}</div>
+        </div>
+        {% endif %}
+        {% if editorial.tool_of_week.install_cmd %}
+        <div class="tow-section">
+          <div class="tow-section-label">Install</div>
+          <div class="install-block">{{ editorial.tool_of_week.install_cmd }}</div>
+        </div>
+        {% endif %}
+        {% if editorial.tool_of_week.quickstart_code %}
+        <div class="tow-section">
+          <div class="tow-section-label">Quickstart</div>
+          <div class="code-block">{{ editorial.tool_of_week.quickstart_code }}</div>
+        </div>
+        {% endif %}
+        {% if editorial.tool_of_week.who_should_use %}
+        <div class="tow-section">
+          <div class="tow-section-label">Who should use this</div>
+          <div class="tow-section-text">{{ editorial.tool_of_week.who_should_use }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div><!-- end page 4 -->
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PAGE 5 — EXTRAS                                              -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="folio-bar">
+    <span class="section-name">Extras</span>
+    <span class="page-of">Page 5 of 5</span>
+  </div>
+
+  <div class="content">
+    {% if editorial.under_the_radar and editorial.under_the_radar.reason %}
+    <div class="section" style="margin-top:22px;">
+      <div class="section-header"><span class="icon">◆</span> Under the Radar</div>
+      <div class="pick-item">
+        <div class="pick-title">{% if editorial.under_the_radar.url %}<a href="{{ editorial.under_the_radar.url }}" target="_blank">{{ editorial.under_the_radar.title }}</a>{% else %}{{ editorial.under_the_radar.title }}{% endif %}</div>
+        <div class="pick-text">{{ editorial.under_the_radar.reason }}</div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if editorial.quick_hits %}
+    <div class="section" style="margin-top:26px;">
+      <div class="section-header"><span class="icon">◆</span> Quick Hits</div>
+      {% for hit in editorial.quick_hits %}
+      <div class="brief">{{ hit }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if editorial.trending_topics or editorial.learning_paths %}
+    <div class="two-col" style="margin-top:26px;">
+      {% if editorial.trending_topics %}
+      <div class="section">
+        <div class="section-header"><span class="icon">◆</span> Trending Topics</div>
+        <div class="topics-cloud">
+          {% for topic in editorial.trending_topics %}
+          <span class="topic-tag">{{ topic }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if editorial.learning_paths %}
+      <div class="section">
+        <div class="section-header"><span class="icon">◆</span> Learning Path Suggestions</div>
+        {% for path in editorial.learning_paths %}
+        <div class="learning-item">{{ path }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% if editorial.glossary %}
+    <div class="section" style="margin-top:26px;">
+      <div class="section-header"><span class="icon">◆</span> Glossary — New Terms This Week</div>
+      <div class="two-col" style="gap:0 26px;">
+        {% for term in editorial.glossary %}
+        <div class="glossary-item">
+          <div class="glossary-term">{{ term.term }}</div>
+          <div class="glossary-def">{{ term.definition }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="footer" style="margin-top:26px;">
+    <div class="brand">THE AI 7</div>
+    <p>Issue No. {{ week_number }} · {{ issue_date }}</p>
+    <p style="margin-top:6px;">Generated by a multi-agent AI newsroom, reviewed by hand before every issue ships.</p>
+  </div>
+</div><!-- end page 5 -->
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+"""Tests for the application schema migration command."""
+
+import unittest
+from unittest.mock import MagicMock, patch
+
+from database.migrate import MIGRATIONS, apply_application_schema
+
+
+class DatabaseMigrationTests(unittest.TestCase):
+    def test_summary_cache_migration_defines_only_approved_tables(self):
+        sql = MIGRATIONS[0].read_text(encoding="utf-8")
+
+        self.assertIn("CREATE TABLE IF NOT EXISTS source_items", sql)
+        self.assertIn("CREATE TABLE IF NOT EXISTS article_summaries", sql)
+        self.assertIn("uq_article_summary_cache", sql)
+
+    def test_workflow_migration_defines_only_approved_tables(self):
+        sql = MIGRATIONS[1].read_text(encoding="utf-8")
+
+        self.assertIn("CREATE TABLE IF NOT EXISTS newsletter_issues", sql)
+        self.assertIn("CREATE TABLE IF NOT EXISTS workflow_runs", sql)
+        self.assertIn("thread_id TEXT NOT NULL UNIQUE", sql)
+
+    def test_artifact_migration_defines_approved_table(self):
+        sql = MIGRATIONS[2].read_text(encoding="utf-8")
+
+        self.assertIn("CREATE TABLE IF NOT EXISTS newsletter_artifacts", sql)
+        self.assertIn("uq_newsletter_artifact_run_type", sql)
+        self.assertIn("UNIQUE (bucket_name, object_key)", sql)
+
+    def test_review_and_subscribers_migration_defines_approved_tables(self):
+        sql = MIGRATIONS[3].read_text(encoding="utf-8")
+
+        self.assertIn("CREATE TABLE IF NOT EXISTS approvals", sql)
+        self.assertIn("CREATE TABLE IF NOT EXISTS subscribers", sql)
+        self.assertIn("CREATE TABLE IF NOT EXISTS email_deliveries", sql)
+        self.assertIn("uq_email_delivery_issue_subscriber", sql)
+        self.assertIn("'reviewing'", sql)
+        self.assertIn("'changes_requested'", sql)
+        self.assertIn("'approved'", sql)
+
+    @patch("database.migrate.database_connection")
+    def test_application_schema_executes_migration(self, mock_connection):
+        connection = MagicMock()
+        cursor = MagicMock()
+        mock_connection.return_value.__enter__.return_value = connection
+        connection.cursor.return_value.__enter__.return_value = cursor
+
+        apply_application_schema("postgresql://user:secret@db/newsletter")
+
+        mock_connection.assert_called_once_with(
+            "postgresql://user:secret@db/newsletter"
+        )
+        self.assertEqual(cursor.execute.call_count, 12)
+        self.assertIn(
+            "CREATE TABLE IF NOT EXISTS source_items",
+            cursor.execute.call_args_list[0].args[0],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
